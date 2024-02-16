@@ -4,6 +4,7 @@ import os
 import playsound
 from dotenv import load_dotenv
 from openai import OpenAI
+import time
 
 WAKE_WORD = "pluto"
 
@@ -67,15 +68,18 @@ def main():
         if WAKE_WORD in text:
             speak("Please tell me how can I help you?")
             conversation_history = []  # Reset context on wake word
+            while True:
+                text = listen()
 
-        elif "goodbye" in text:
-            speak("Goodbye!")
-            conversation_history = []  # Reset context on goodbye
-
-        else:
-            response, updated_history = answer(text, client, conversation_history)
-            speak(response)
-            conversation_history = updated_history
+                if "goodbye" in text:
+                    speak("Goodbye!")
+                    break
+                else:
+                    response, updated_history = answer(text, client, conversation_history)
+                    speak(response)
+                    conversation_history = updated_history
+                    time.sleep(1)
+                    speak("You may continue our conversation, or say goodbye to exit.")
 
 if __name__ == "__main__":
     main()
