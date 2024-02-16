@@ -65,7 +65,7 @@ def main():
     while True:
         text = listen()
 
-        if WAKE_WORD in text:
+        if WAKE_WORD.lower() in text:
             speak("Please tell me how can I help you?")
             conversation_history = []  # Reset context on wake word
             while True:
